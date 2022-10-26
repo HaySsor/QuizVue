@@ -5,23 +5,28 @@ body {
   font-size: 20px;
   font-family: sans-serif;
   padding-top: 20px;
-  background: #e6ecf1;
+  background-color: #078560;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
 }
-
 .ctr {
-  margin: 0 auto;
-  max-width: 600px;
-  width: 100%;
-  box-sizing: border-box;
+  width: 500px;
+  border-radius: 25px;
+  overflow: hidden;
   position: relative;
 }
 .questions-ctr {
   position: relative;
-  width: 100%;
+  overflow: hidden;
 }
 .question {
-  width: 100%;
+
   padding: 20px;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
   font-size: 32px;
   font-weight: bold;
   text-align: center;
@@ -40,6 +45,7 @@ body {
   width: 100%;
   background-color: #fff;
   transition: 0.2s linear all;
+  position: relative;
 }
 .answer span {
   display: inline-block;
@@ -52,10 +58,13 @@ body {
   margin-top: 10px;
   background-color: #ddd;
   position: relative;
+  border-radius: 25px;
+  margin-bottom: 20px;
+  overflow: hidden;
 }
 .bar {
   height: 50px;
-  background-color: #ff6372;
+  background-color: #ff63738e;
   transition: all 0.3s linear;
 }
 .status {
@@ -94,14 +103,18 @@ body {
   transition: 0.4s linear all;
   text-align: center;
 }
-.fade-enter {
+.fade-enter-from {
   opacity: 0;
+  transform: scale(0);
 }
 .fade-enter-active {
-  transition: all 0.3s linear;
+  transition: all 0.7s linear;
+}
+.fade-leave-to {
+  transform: scale(0);
 }
 .fade-leave-active {
-  transition: all 0.3s linear;
+  transition: all 0.7s linear;
   opacity: 0;
   position: absolute;
 }
@@ -114,10 +127,12 @@ body {
   padding: 10px 25px;
   margin: 10px auto;
   display: block;
+  border-radius: 25px;
 }
 
 .result {
-  width: 100%;
+  border-radius: 25px;
+  overflow: hidden;
 }
 
 .reset-btn:active,
