@@ -1,5 +1,5 @@
 <template>
-  <div class="app-body">
+  <div class="app-body" v-if="loadedData">
     <div class="progress">
       <div class="bar" :style="progresBar"></div>
       <div class="status">
@@ -14,7 +14,11 @@
           :questionsAnswersd="questionsAnswers"
           @question-answered="answeredQuestion" />
 
-        <Result v-else :totalCorrent="totalCorrent" :results="results" />
+        <Result
+          v-else
+          :totalCorrent="totalCorrent"
+          :questions="questions"
+          :user="user" />
       </Transition>
       <button
         v-if="questionsAnswers === questions.length"
@@ -25,22 +29,24 @@
       </button>
     </div>
   </div>
+  <LoadingDataSpinner v-else />
 </template>
 
 <script>
 import Questions from './components/Questions.vue';
 import Result from './components/Result.vue';
-import data from './data.json';
+import LoadingDataSpinner from './components/LoadingDataSpinner.vue'
 
 export default {
   name: 'App',
-  components: {Questions, Result},
+  components: {Questions, Result,LoadingDataSpinner},
   data() {
     return {
-      questions: data.questions,
+      questions: [],
       totalCorrent: 0,
-      results: data.results,
       questionsAnswers: 0,
+      user: [],
+      loadedData: false,
     };
   },
   computed: {
@@ -58,16 +64,46 @@ export default {
     },
   },
   methods: {
-    answeredQuestion(correct) {
-      if (correct) {
-        this.totalCorrent++;
-      }
+    answeredQuestion(selected) {
+      console.log(selected);
+      this.user.push(selected.selet);
+      this.questions.forEach((item) => {
+        if (item.question === selected.question) {
+          console.log(selected.selet);
+          if (item.correct === selected.selet) {
+            this.totalCorrent++;
+          }
+        }
+      });
       this.questionsAnswers++;
     },
-    reset() {
+    async reset() {
       this.questionsAnswers = 0;
       this.totalCorrent = 0;
+      this.user = [];
+      this.loadedData = false;
+      await this.fetchData();
     },
+    async fetchData() {
+      const URL = 'https://opentdb.com/api.php?amount=3&type=multiple';
+      try {
+        const res = await fetch(URL);
+        const data = await res.json();
+        this.loadedData = true;
+        this.questions = data.results.map((item) => {
+          return {
+            question: item.question,
+            answers: [...item.incorrect_answers, item.correct_answer].sort(),
+            correct: item.correct_answer,
+          };
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
+  async mounted() {
+    await this.fetchData();
   },
 };
 </script>

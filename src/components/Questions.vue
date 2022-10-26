@@ -5,15 +5,15 @@
         class="single-question"
         v-for="(question, qi) in questions"
         v-show="questionsAnswersd === qi"
-        :key="question.q">
-        <div class="question">{{ question.q }}</div>
+        :key="Math.random()">
+        <div class="question">{{ question.question }}</div>
         <div class="answers">
           <div
             class="answer"
             v-for="answer in question.answers"
-            :key="answer.text"
-            @click.prevent="selectAnswer(answer.is_correct)">
-            {{ answer.text }}
+            :key="Math.random()"
+            @click="selectAnswer(question.question, $event)">
+            {{ answer }}
           </div>
         </div>
       </div>
@@ -35,8 +35,11 @@ export default {
     },
   },
   methods: {
-    selectAnswer(correct) {
-      this.$emit('question-answered', correct);
+    selectAnswer(question, e) {
+      this.$emit('question-answered', {
+        selet: e.target.textContent,
+        question: question,
+      });
     },
   },
   components: {Transition, TransitionGroup},

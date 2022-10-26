@@ -1,31 +1,33 @@
 <template>
-  <div class="result">
-    <div class="title">
-      {{ results[resultIndex].title }}
+  <div>
+    <div class="result">
+      <h1 class="score">Your score {{ totalCorrent }}</h1>
+      <div class="boxq" v-for="({question, correct}, i) in questions">
+        <h3>{{ question }}</h3>
+        <div class="desc">
+          <p class="corrent">Corrent answer : {{ correct }}</p>
+          <p
+            class="user-answer"
+            :style="{
+              backgroundColor:
+                correct === user[i] ? 'lightgreen' : 'lightcoral',
+            }">
+            Your Answer : {{ user[i] }}
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="desc">{{ results[resultIndex].desc }}</div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['totalCorrent', 'results'],
+  props: ['questions', 'user', 'totalCorrent'],
   data() {
     return {
       title: '',
       desc: '',
     };
-  },
-  computed: {
-    resultIndex() {
-      let index = 0;
-      this.results.forEach((e, i) => {
-        if (e.min <= this.totalCorrent && e.max >= this.totalCorrent) {
-          index = i;
-        }
-      });
-      return index;
-    },
   },
 };
 </script>
