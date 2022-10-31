@@ -3,7 +3,7 @@
     <div class="result">
       <h1 class="score">Your score {{ totalCorrent }}</h1>
       <div class="boxq" v-for="({question, correct}, i) in questions">
-        <h3>{{ question }}</h3>
+        <h3 class="result-question">{{ question }}</h3>
         <div class="desc">
           <p class="corrent">Corrent answer : {{ correct }}</p>
           <p

@@ -1,12 +1,10 @@
 <template>
   <h1>Test your knowledge 🤔</h1>
-  <div v-if="!loadedData">
-    <label>How many Question you want ?</label>
-    <div class="option">
-      <input v-model="howManyQuestion" class="input-number" type="number" />
-      <button @click="loadHowManyQuestion">Let's Go</button>
-    </div>
-  </div>
+  <QuestionLengthVue
+    v-if="!loadedData"
+    v-model="howManyQuestion"
+    :error="error"
+    @loadHowManyQuestionProps="loadHowManyQuestion" />
   <div v-else>
     <div class="app-body" v-if="fetchDataloading">
       <div class="progress">
@@ -23,7 +21,6 @@
             :questions="questions"
             :questionsAnswersd="questionsAnswers"
             @question-answered="answeredQuestion" />
-
           <Result
             v-else
             :totalCorrent="totalCorrent"
@@ -47,10 +44,11 @@
 import Questions from './components/Questions.vue';
 import Result from './components/Result.vue';
 import LoadingDataSpinner from './components/LoadingDataSpinner.vue';
+import QuestionLengthVue from './components/QuestionLength.vue';
 
 export default {
   name: 'App',
-  components: {Questions, Result, LoadingDataSpinner},
+  components: {Questions, Result, LoadingDataSpinner, QuestionLengthVue},
   data() {
     return {
       questions: [],
@@ -60,16 +58,17 @@ export default {
       loadedData: false,
       howManyQuestion: 1,
       fetchDataloading: false,
+      error: false,
     };
   },
   computed: {
     progresBar() {
       let color = '#ff63738e';
-      if (this.questionsAnswers >= (this.questions.length / 2)){
-        color = '#b4bc0e8e'
+      if (this.questionsAnswers >= this.questions.length / 2) {
+        color = '#b4bc0e8e';
       }
-      if(this.questionsAnswers  == this.howManyQuestion  ){
-        color = 'lightgreen'
+      if (this.questionsAnswers == this.howManyQuestion) {
+        color = 'lightgreen';
       }
       return {
         width: `${(this.questionsAnswers / this.questions.length) * 100}%`,
@@ -83,7 +82,6 @@ export default {
       this.user.push(selected.selet);
       this.questions.forEach((item) => {
         if (item.question === selected.question) {
-          console.log(selected.selet);
           if (item.correct === selected.selet) {
             this.totalCorrent++;
           }
@@ -92,24 +90,28 @@ export default {
       this.questionsAnswers++;
     },
     async loadHowManyQuestion() {
+      if (this.howManyQuestion <= 0) {
+        this.error = true;
+        return;
+      }
+      this.error = false;
       this.loadedData = true;
       await this.fetchData(this.howManyQuestion);
     },
-    async reset() {
+    reset() {
       this.questionsAnswers = 0;
       this.totalCorrent = 0;
       this.user = [];
       this.loadedData = false;
-      this.howManyQuestion = 1,
-      this.fetchDataloading = false
-      await this.fetchData();
+      this.howManyQuestion = 1;
+      this.fetchDataloading = false;
     },
     async fetchData(number) {
       const URL = `https://opentdb.com/api.php?amount=${number}&type=multiple`;
       try {
         const res = await fetch(URL);
         const data = await res.json();
-        this.fetchDataloading = true
+        this.fetchDataloading = true;
         this.questions = data.results.map((item) => {
           return {
             question: item.question,
@@ -125,4 +127,3 @@ export default {
 };
 </script>
 
-<style></style>

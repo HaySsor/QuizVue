@@ -213,6 +213,23 @@ h1 {
   border: 0;
   outline: 0;
 }
+.result-question{
+  margin-bottom: 10px;
+}
+.error{
+  font-size: 15px;
+  text-align: center;
+  color: tomato;
+}
+.error-input{
+  border: 1px solid tomato;
+  transition: transform 0.5s;
+  animation:error 1s;
+}
+.info{
+  font-size: 13px;
+  text-align: center;
+}
 .lds-spinner {
   display: flex;
   color: official;
@@ -290,5 +307,20 @@ h1 {
   }
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes error{
+  0%{
+    transform: rotate(0);
+  }
+  25%{
+    transform: rotate(10deg);
+  }
+  75%{
+    transform: rotate(-10deg);
+  }
+  100%{
+    transform: rotate(0);
   }
 }
