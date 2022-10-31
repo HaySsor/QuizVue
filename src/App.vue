@@ -1,18 +1,18 @@
 <template>
   <h1>Test your knowledge 🤔</h1>
-  <QuestionLengthVue
+  <QuizLength
     v-if="!loadedData"
     v-model="howManyQuestion"
     :error="error"
     @loadHowManyQuestionProps="loadHowManyQuestion" />
   <div v-else>
-    <div class="app-body" v-if="fetchDataloading">
+    <div class="app-body" v-if="fetchDataLoading">
       <div class="progress">
         <div
           class="bar"
-          :class="progresBar"
+          :class="progressBar"
           :style="{
-            width: `${(this.questionsAnswers / this.questions.length) * 100}%`,
+            width: `${(questionsAnswers / questions.length) * 100}%`,
           }"></div>
         <div class="status">
           {{ questionsAnswers }} out of {{ questions.length }} questions
@@ -21,12 +21,12 @@
       </div>
       <div class="ctr">
         <Transition name="fade" mode="out-in">
-          <Questions
+          <QuizQuestions
             v-if="questionsAnswers < questions.length"
             :questions="questions"
             :displayedQuestion="questionsAnswers"
-            @question-answered="answeredQuestion" />
-          <Result
+            @userQuestionAnswer="answeredQuestion" />
+          <QuizResult
             v-else
             :goodAnswers="goodAnswers"
             :questions="questions"
@@ -41,19 +41,19 @@
         </button>
       </div>
     </div>
-    <LoadingDataSpinner v-else />
+    <QuizLoadingDataSpinner v-else />
   </div>
 </template>
 
 <script>
-import Questions from './components/Questions.vue';
-import Result from './components/Result.vue';
-import LoadingDataSpinner from './components/LoadingDataSpinner.vue';
-import QuestionLengthVue from './components/QuestionLength.vue';
+import QuizQuestions from './components/QuizQuestions.vue';
+import QuizResult from './components/QuizResult.vue';
+import QuizLoadingDataSpinner from './components/QuizLoadingDataSpinner.vue';
+import QuizLength from './components/QuizLength.vue';
 
 export default {
   name: 'App',
-  components: {Questions, Result, LoadingDataSpinner, QuestionLengthVue},
+  components: {QuizQuestions, QuizResult, QuizLoadingDataSpinner, QuizLength},
   data() {
     return {
       questions: [],
@@ -62,12 +62,12 @@ export default {
       users: [],
       loadedData: false,
       howManyQuestion: 1,
-      fetchDataloading: false,
+      fetchDataLoading: false,
       error: false,
     };
   },
   computed: {
-    progresBar() {
+    progressBar() {
       return {
         half: this.questionsAnswers >= this.questions.length / 2,
         full: this.questionsAnswers == this.howManyQuestion,
@@ -77,10 +77,10 @@ export default {
   methods: {
     answeredQuestion(selected) {
       console.log(selected);
-      this.users.push(selected.selet);
+      this.users.push(selected.select);
       this.questions.forEach((item) => {
         if (item.question === selected.question) {
-          if (item.correct === selected.selet) {
+          if (item.correct === selected.select) {
             this.goodAnswers++;
           }
         }
@@ -102,14 +102,14 @@ export default {
       this.users = [];
       this.loadedData = false;
       this.howManyQuestion = 1;
-      this.fetchDataloading = false;
+      this.fetchDataLoading = false;
     },
     async fetchData(number) {
       const URL = `https://opentdb.com/api.php?amount=${number}&type=multiple`;
       try {
         const res = await fetch(URL);
         const {results} = await res.json();
-        this.fetchDataloading = true;
+        this.fetchDataLoading = true;
         this.questions = results.map(
           ({question, incorrect_answers, correct_answer}) => {
             return {

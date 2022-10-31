@@ -5,7 +5,7 @@
         class="single-question"
         v-for="({question, answers}, qi) in questions"
         v-show="displayedQuestion === qi"
-        :key="Math.random()">
+        :key="qi">
         <div class="question">{{ question }}</div>
         <div class="answers">
           <div
@@ -25,19 +25,22 @@
 import {Transition, TransitionGroup} from 'vue';
 
 export default {
-  props: ['questions', 'displayedQuestion'],
-  emits: ['question-answered'],
-  computed: {
-    progresBar() {
-      return {
-        width: `${(this.displayedQuestion / this.questions.length) * 100}%`,
-      };
+  name: 'QuizQuestions',
+  props: {
+    questions: {
+      type: Array,
+      required: true,
+    },
+    displayedQuestion: {
+      type: Number,
+      required: true,
     },
   },
+  emits: ['userQuestionAnswer'],
   methods: {
     selectAnswer(question, e) {
-      this.$emit('question-answered', {
-        selet: e.target.textContent,
+      this.$emit('userQuestionAnswer', {
+        select: e.target.textContent,
         question: question,
       });
     },

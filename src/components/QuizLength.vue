@@ -1,29 +1,41 @@
 <template>
-  <div>
+  <form>
     <label>Choose a number of questions min 1 max 50</label>
     <div class="option">
       <input
         :value="modelValue"
         @input="passValueToParent"
         class="input-number"
-        :class="{
-          'error-input': error,
-        }"
+        :class="addError"
         type="number" />
-      <button @click="loadHowManyQuestionProps">Let's Go</button>
+      <button @click.prevent="loadHowManyQuestionProps">Let's Go</button>
     </div>
-    <p v-show="error" class="error">Sory must be more than 0 🤨</p>
-  </div>
+    <p v-show="error" class="error">Sorry must be more than 0 🤨</p>
+  </form>
 </template>
 
 <script>
 export default {
+  name: 'QuizLength',
   model: {
     event: 'change',
   },
   props: {
-    modelValue: Number,
-    error: Boolean,
+    modelValue: {
+      type: Number,
+      required: true,
+    },
+    error: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  computed: {
+    addError() {
+      return {
+        'error-input': this.error,
+      };
+    },
   },
   methods: {
     loadHowManyQuestionProps() {
