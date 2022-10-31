@@ -21,7 +21,7 @@ body {
   align-items: center;
   flex-direction: column;
 }
-.input-number{
+.input-number {
   padding: 5px 10px;
   margin: 20px;
   border: none;
@@ -32,17 +32,18 @@ h1 {
   text-align: center;
   margin-bottom: 20px;
 }
-.option{
+.option {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.option button{
+.option button {
   border: none;
-  padding: 5px 10px;
+  padding: 10px 15px;
   border-radius: 25px;
   background-color: #00ca8c;
   cursor: pointer;
+  color: white;
 }
 .ctr {
   width: 500px;
@@ -112,6 +113,12 @@ h1 {
   height: 50px;
   background-color: #ff63738e;
   transition: all 0.3s linear;
+}
+.half {
+  background-color: #b4bc0e8e;
+}
+.full {
+  background-color: lightgreen;
 }
 .status {
   position: absolute;
@@ -213,20 +220,20 @@ h1 {
   border: 0;
   outline: 0;
 }
-.result-question{
+.result-question {
   margin-bottom: 10px;
 }
-.error{
+.error {
   font-size: 15px;
   text-align: center;
   color: tomato;
 }
-.error-input{
+.error-input {
   border: 1px solid tomato;
   transition: transform 0.5s;
-  animation:error 1s;
+  animation: error 1s;
 }
-.info{
+.info {
   font-size: 13px;
   text-align: center;
 }
@@ -310,17 +317,17 @@ h1 {
   }
 }
 
-@keyframes error{
-  0%{
+@keyframes error {
+  0% {
     transform: rotate(0);
   }
-  25%{
+  25% {
     transform: rotate(10deg);
   }
-  75%{
+  75% {
     transform: rotate(-10deg);
   }
-  100%{
+  100% {
     transform: rotate(0);
   }
 }

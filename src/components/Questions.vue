@@ -3,16 +3,16 @@
     <TransitionGroup name="fade">
       <div
         class="single-question"
-        v-for="(question, qi) in questions"
-        v-show="questionsAnswersd === qi"
+        v-for="({question, answers}, qi) in questions"
+        v-show="displayedQuestion === qi"
         :key="Math.random()">
-        <div class="question">{{ question.question }}</div>
+        <div class="question">{{ question }}</div>
         <div class="answers">
           <div
             class="answer"
-            v-for="answer in question.answers"
+            v-for="answer in answers"
             :key="Math.random()"
-            @click="selectAnswer(question.question, $event)">
+            @click="selectAnswer(question, $event)">
             {{ answer }}
           </div>
         </div>
@@ -25,12 +25,12 @@
 import {Transition, TransitionGroup} from 'vue';
 
 export default {
-  props: ['questions', 'questionsAnswersd'],
+  props: ['questions', 'displayedQuestion'],
   emits: ['question-answered'],
   computed: {
     progresBar() {
       return {
-        width: `${(this.questionsAnswersd / this.questions.length) * 100}%`,
+        width: `${(this.displayedQuestion / this.questions.length) * 100}%`,
       };
     },
   },

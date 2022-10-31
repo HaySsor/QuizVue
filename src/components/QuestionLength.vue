@@ -1,7 +1,6 @@
 <template>
   <div>
-    <label>How many Question you want ?</label>
-    <p class="info"> *min 1 max 50</p>
+    <label>Choose a number of questions min 1 max 50</label>
     <div class="option">
       <input
         :value="modelValue"

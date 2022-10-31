@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="result">
-      <h1 class="score">Your score {{ totalCorrent }}</h1>
+      <h1 class="score">Your score {{ goodAnswers }}</h1>
       <div class="boxq" v-for="({question, correct}, i) in questions">
         <h3 class="result-question">{{ question }}</h3>
         <div class="desc">
@@ -10,9 +10,9 @@
             class="user-answer"
             :style="{
               backgroundColor:
-                correct === user[i] ? 'lightgreen' : 'lightcoral',
+                correct === users[i] ? 'lightgreen' : 'lightcoral',
             }">
-            Your Answer : {{ user[i] }}
+            Your Answer : {{ users[i] }}
           </p>
         </div>
       </div>
@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  props: ['questions', 'user', 'totalCorrent'],
+  props: ['questions', 'users', 'goodAnswers'],
   data() {
     return {
       title: '',

@@ -8,7 +8,12 @@
   <div v-else>
     <div class="app-body" v-if="fetchDataloading">
       <div class="progress">
-        <div class="bar" :style="progresBar"></div>
+        <div
+          class="bar"
+          :class="progresBar"
+          :style="{
+            width: `${(this.questionsAnswers / this.questions.length) * 100}%`,
+          }"></div>
         <div class="status">
           {{ questionsAnswers }} out of {{ questions.length }} questions
           answered
@@ -19,13 +24,13 @@
           <Questions
             v-if="questionsAnswers < questions.length"
             :questions="questions"
-            :questionsAnswersd="questionsAnswers"
+            :displayedQuestion="questionsAnswers"
             @question-answered="answeredQuestion" />
           <Result
             v-else
-            :totalCorrent="totalCorrent"
+            :goodAnswers="goodAnswers"
             :questions="questions"
-            :user="user" />
+            :users="users" />
         </Transition>
         <button
           v-if="questionsAnswers === questions.length"
@@ -52,9 +57,9 @@ export default {
   data() {
     return {
       questions: [],
-      totalCorrent: 0,
+      goodAnswers: 0,
       questionsAnswers: 0,
-      user: [],
+      users: [],
       loadedData: false,
       howManyQuestion: 1,
       fetchDataloading: false,
@@ -63,27 +68,20 @@ export default {
   },
   computed: {
     progresBar() {
-      let color = '#ff63738e';
-      if (this.questionsAnswers >= this.questions.length / 2) {
-        color = '#b4bc0e8e';
-      }
-      if (this.questionsAnswers == this.howManyQuestion) {
-        color = 'lightgreen';
-      }
       return {
-        width: `${(this.questionsAnswers / this.questions.length) * 100}%`,
-        backgroundColor: color,
+        half: this.questionsAnswers >= this.questions.length / 2,
+        full: this.questionsAnswers == this.howManyQuestion,
       };
     },
   },
   methods: {
     answeredQuestion(selected) {
       console.log(selected);
-      this.user.push(selected.selet);
+      this.users.push(selected.selet);
       this.questions.forEach((item) => {
         if (item.question === selected.question) {
           if (item.correct === selected.selet) {
-            this.totalCorrent++;
+            this.goodAnswers++;
           }
         }
       });
@@ -100,8 +98,8 @@ export default {
     },
     reset() {
       this.questionsAnswers = 0;
-      this.totalCorrent = 0;
-      this.user = [];
+      this.goodAnswers = 0;
+      this.users = [];
       this.loadedData = false;
       this.howManyQuestion = 1;
       this.fetchDataloading = false;
@@ -110,15 +108,17 @@ export default {
       const URL = `https://opentdb.com/api.php?amount=${number}&type=multiple`;
       try {
         const res = await fetch(URL);
-        const data = await res.json();
+        const {results} = await res.json();
         this.fetchDataloading = true;
-        this.questions = data.results.map((item) => {
-          return {
-            question: item.question,
-            answers: [...item.incorrect_answers, item.correct_answer].sort(),
-            correct: item.correct_answer,
-          };
-        });
+        this.questions = results.map(
+          ({question, incorrect_answers, correct_answer}) => {
+            return {
+              question: question,
+              answers: [...incorrect_answers, correct_answer].sort(),
+              correct: correct_answer,
+            };
+          }
+        );
       } catch (err) {
         console.log(err);
       }
@@ -126,4 +126,3 @@ export default {
   },
 };
 </script>
-
