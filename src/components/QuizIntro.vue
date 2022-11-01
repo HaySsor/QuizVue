@@ -1,14 +1,14 @@
 <template>
-  <form>
+  <form @submit.prevent="$emit('onSubmit', value)">
     <label>Choose a number of questions min 1 max 50</label>
     <div class="option">
       <input
-        :value="modelValue"
+        v-model="value"
         @input="passValueToParent"
         class="input-number"
-        :class="addError"
+        :class="hasError"
         type="number" />
-      <button @click.prevent="loadHowManyQuestionProps">Let's Go</button>
+      <button>Let's Go</button>
     </div>
     <p v-show="error" class="error">Sorry must be more than 0 🤨</p>
   </form>
@@ -17,32 +17,22 @@
 <script>
 export default {
   name: 'QuizLength',
-  model: {
-    event: 'change',
+  data() {
+    return {
+      value: 1,
+    };
   },
   props: {
-    modelValue: {
-      type: Number,
-      required: true,
-    },
     error: {
       type: Boolean,
       required: true,
     },
   },
   computed: {
-    addError() {
+    hasError() {
       return {
         'error-input': this.error,
       };
-    },
-  },
-  methods: {
-    loadHowManyQuestionProps() {
-      this.$emit('loadHowManyQuestionProps');
-    },
-    passValueToParent(e) {
-      this.$emit('update:modelValue', parseInt(e.target.value));
     },
   },
 };

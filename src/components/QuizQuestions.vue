@@ -3,16 +3,16 @@
     <TransitionGroup name="fade">
       <div
         class="single-question"
-        v-for="({question, answers}, qi) in questions"
-        v-show="displayedQuestion === qi"
-        :key="qi">
+        v-for="({question, answers, correct}, index) in questions"
+        v-show="displayedQuestion === index"
+        :key="`question-${index}`">
         <div class="question">{{ question }}</div>
         <div class="answers">
           <div
             class="answer"
             v-for="answer in answers"
-            :key="Math.random()"
-            @click="selectAnswer(question, $event)">
+            :key="`answer-${index}-${idx}`"
+            @click="selectAnswer(question, correct, $event)">
             {{ answer }}
           </div>
         </div>
@@ -38,10 +38,12 @@ export default {
   },
   emits: ['userQuestionAnswer'],
   methods: {
-    selectAnswer(question, e) {
+    selectAnswer(question, correct, e) {
       this.$emit('userQuestionAnswer', {
         select: e.target.textContent,
         question: question,
+        current: correct,
+        goodAnswer: e.target.textContent === correct,
       });
     },
   },

@@ -1,10 +1,9 @@
 <template>
   <h1>Test your knowledge 🤔</h1>
-  <QuizLength
+  <QuizIntro
     v-if="!loadedData"
-    v-model="howManyQuestion"
     :error="error"
-    @loadHowManyQuestionProps="loadHowManyQuestion" />
+    @on-submit="loadHowManyQuestion" />
   <div v-else>
     <div class="app-body" v-if="fetchDataLoading">
       <div class="progress">
@@ -26,11 +25,7 @@
             :questions="questions"
             :displayedQuestion="questionsAnswers"
             @userQuestionAnswer="answeredQuestion" />
-          <QuizResult
-            v-else
-            :goodAnswers="goodAnswers"
-            :questions="questions"
-            :users="users" />
+          <QuizResult v-else :usersAnswers="usersAnswers" />
         </Transition>
         <button
           v-if="questionsAnswers === questions.length"
@@ -49,17 +44,17 @@
 import QuizQuestions from './components/QuizQuestions.vue';
 import QuizResult from './components/QuizResult.vue';
 import QuizLoadingDataSpinner from './components/QuizLoadingDataSpinner.vue';
-import QuizLength from './components/QuizLength.vue';
+import QuizIntro from './components/QuizIntro.vue';
 
 export default {
   name: 'App',
-  components: {QuizQuestions, QuizResult, QuizLoadingDataSpinner, QuizLength},
+  components: {QuizQuestions, QuizResult, QuizLoadingDataSpinner, QuizIntro},
   data() {
     return {
       questions: [],
       goodAnswers: 0,
       questionsAnswers: 0,
-      users: [],
+      usersAnswers: [],
       loadedData: false,
       howManyQuestion: 1,
       fetchDataLoading: false,
@@ -75,19 +70,12 @@ export default {
     },
   },
   methods: {
-    answeredQuestion(selected) {
-      console.log(selected);
-      this.users.push(selected.select);
-      this.questions.forEach((item) => {
-        if (item.question === selected.question) {
-          if (item.correct === selected.select) {
-            this.goodAnswers++;
-          }
-        }
-      });
+    answeredQuestion(userAnswerObj) {
+      this.usersAnswers.push(userAnswerObj);
       this.questionsAnswers++;
     },
-    async loadHowManyQuestion() {
+    async loadHowManyQuestion(value) {
+      this.howManyQuestion = value;
       if (this.howManyQuestion <= 0) {
         this.error = true;
         return;
@@ -99,7 +87,7 @@ export default {
     reset() {
       this.questionsAnswers = 0;
       this.goodAnswers = 0;
-      this.users = [];
+      this.usersAnswers = [];
       this.loadedData = false;
       this.howManyQuestion = 1;
       this.fetchDataLoading = false;

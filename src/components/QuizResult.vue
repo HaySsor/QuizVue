@@ -1,18 +1,17 @@
 <template>
   <div>
     <div class="result">
-      <h1 class="score">Your score {{ goodAnswers }}</h1>
-      <div class="boxQ" v-for="({question, correct}, i) in questions">
+      <h1 class="score">Your score {{ calculateUserScore }}</h1>
+      <div class="boxQ" v-for="({question, current, select}) in usersAnswers">
         <h3 class="result-question">{{ question }}</h3>
         <div class="desc">
-          <p class="correct">Correct answer : {{ correct }}</p>
+          <p class="correct">Correct answer : {{ current }}</p>
           <p
             class="user-answer"
             :style="{
-              backgroundColor:
-                correct === users[i] ? 'lightgreen' : 'lightcoral',
+              backgroundColor: current === select ? 'lightgreen' : 'lightcoral',
             }">
-            Your Answer : {{ users[i] }}
+            Your Answer : {{ select }}
           </p>
         </div>
       </div>
@@ -24,17 +23,14 @@
 export default {
   name: 'QuizResult',
   props: {
-    questions: {
+    usersAnswers: {
       type: Array,
       required: true,
     },
-    users: {
-      type: Array,
-      required: true,
-    },
-    goodAnswers: {
-      type: Number,
-      required: true,
+  },
+  computed: {
+    calculateUserScore() {
+      return this.usersAnswers.filter((item) => item.goodAnswer).length;
     },
   },
 };
