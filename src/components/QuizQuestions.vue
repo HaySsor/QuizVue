@@ -6,15 +6,14 @@
         v-for="({question, answers, correct}, index) in questions"
         v-show="displayedQuestion === index"
         :key="`question-${index}`">
-        <div class="question">{{ question }}</div>
+        <div class="question" v-html="question"></div>
         <div class="answers">
           <div
             class="answer"
             v-for="answer in answers"
             :key="`answer-${index}-${idx}`"
-            @click="selectAnswer(question, correct, $event)">
-            {{ answer }}
-          </div>
+            @click="selectAnswer(question, correct, $event)"
+            v-html="answer"></div>
         </div>
       </div>
     </TransitionGroup>
