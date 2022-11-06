@@ -22,10 +22,6 @@
 <h3 align="center">QuizApp Vue</h3>
 
   <p align="center">
-    project_description
-    <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://hayssor.github.io/QuizVue/">View Demo</a>
   </p>
