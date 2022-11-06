@@ -56,7 +56,14 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project is an exercise and consolidation of knowledge of the Vue framework, this project is a quiz that takes questions from the API.
+The project is a simple quiz application, built from several components
+
+**Info** - the component is responsible for the number of questions to be retrieved by the API
+
+**App** - this component is responsible for downloading a certain number of questions based on the data received from the Api and sending them to the other components in the form of props 
+
+**Questions** - the component is responsible for displaying the questions received from Api, catching the selected answer and comparing it with the correct one and sending the object with the content and selected answers 
+result - is responsible for displaying all the questions at the very end and displaying the correct and marked answers and counting the points the user has scored 
 
 
 
