@@ -9,7 +9,7 @@ This template should help get you started developing with Vue 3 in Vite.
 ## Technology 
 
 Vue3
-Rest APi
+Rest API
 
 ## Project Setup
 
