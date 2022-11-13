@@ -1,42 +1,44 @@
 <template>
-  <h1>Test your knowledge 🤔</h1>
-  <QuizIntro
-    v-if="!loadedData"
-    :error="error"
-    @on-submit="loadHowManyQuestion" />
-  <div v-else>
-    <div class="app-body" v-if="fetchDataLoading">
-      <div class="progress">
-        <div
-          class="bar"
-          :class="progressBar"
-          :style="{
-            width: `${(questionsAnswers / questions.length) * 100}%`,
-          }"></div>
-        <div class="status">
-          {{ questionsAnswers }} out of {{ questions.length }} questions
-          answered
+  <div class="section">
+    <h1 class="home-title">Test your knowledge 🤔</h1>
+    <QuizIntro
+      v-if="!loadedData"
+      :error="error"
+      @on-submit="loadHowManyQuestion" />
+    <div v-else>
+      <div class="app-body" v-if="fetchDataLoading">
+        <div class="progress">
+          <div
+            class="bar"
+            :class="progressBar"
+            :style="{
+              width: `${(questionsAnswers / questions.length) * 100}%`,
+            }"></div>
+          <div class="status">
+            {{ questionsAnswers }} out of {{ questions.length }} questions
+            answered
+          </div>
+        </div>
+        <div class="ctr">
+          <Transition name="fade" mode="out-in">
+            <QuizQuestions
+              v-if="questionsAnswers < questions.length"
+              :questions="questions"
+              :displayedQuestion="questionsAnswers"
+              @userQuestionAnswer="answeredQuestion" />
+            <QuizResult v-else :usersAnswers="usersAnswers" />
+          </Transition>
+          <button
+            v-if="questionsAnswers === questions.length"
+            type="button"
+            class="reset-btn"
+            @click.prevent="reset">
+            Reset
+          </button>
         </div>
       </div>
-      <div class="ctr">
-        <Transition name="fade" mode="out-in">
-          <QuizQuestions
-            v-if="questionsAnswers < questions.length"
-            :questions="questions"
-            :displayedQuestion="questionsAnswers"
-            @userQuestionAnswer="answeredQuestion" />
-          <QuizResult v-else :usersAnswers="usersAnswers" />
-        </Transition>
-        <button
-          v-if="questionsAnswers === questions.length"
-          type="button"
-          class="reset-btn"
-          @click.prevent="reset">
-          Reset
-        </button>
-      </div>
+      <QuizLoadingDataSpinner v-else />
     </div>
-    <QuizLoadingDataSpinner v-else />
   </div>
 </template>
 

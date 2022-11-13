@@ -1,6 +1,6 @@
 <template>
-  <form @submit.prevent="$emit('onSubmit', value)">
-    <label>Choose a number of questions min 1 max 50</label>
+  <form @submit.prevent="$emit('onSubmit', value)" class="form">
+    <label class="label">Choose a number of questions <br> min 1 max 50</label>
     <div class="option">
       <input
         v-model="value"
