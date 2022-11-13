@@ -25,6 +25,7 @@ body {
   padding: 20px 10px;
   border-radius: 25px;
 }
+
 .questions-ctr {
   display: flex;
   justify-content: center;
@@ -115,6 +116,7 @@ body {
 .progress {
   margin-top: 10px;
   position: relative;
+  width: 100%;
 }
 .status {
   position: absolute;
@@ -246,5 +248,8 @@ body {
 @media (min-width: 1200px) {
   .section {
     width: 800px;
+  }
+  .app-body {
+    width: 600px;
   }
 }
